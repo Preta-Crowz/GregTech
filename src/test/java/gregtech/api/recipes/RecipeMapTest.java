@@ -6,6 +6,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -13,8 +14,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import static gregtech.api.unification.material.Materials.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class RecipeMapTest {
 
@@ -23,9 +23,11 @@ public class RecipeMapTest {
         Bootstrap.perform();
     }
 
-    @Test
-    public void findRecipe() {
-        RecipeMap<SimpleRecipeBuilder> map = new RecipeMap<>("chemical_reactor",
+    RecipeMap<SimpleRecipeBuilder> map;
+
+    @Before
+    public void setuepRecipes() {
+        map = new RecipeMap<>("chemical_reactor",
                 0,
                 2,
                 0,
@@ -35,8 +37,8 @@ public class RecipeMapTest {
                 0,
                 2,
                 new SimpleRecipeBuilder().EUt(30),
-                false);
 
+                false);
         map.recipeBuilder()
                 .notConsumable(new ItemStack(Blocks.COBBLESTONE))
                 .outputs(new ItemStack(Blocks.STONE))
@@ -75,25 +77,18 @@ public class RecipeMapTest {
     // This test fails
     @Test
     public void findRecipeFluidOnly() {
-        RecipeMap<SimpleRecipeBuilder> map = new RecipeMap<>("chemical_reactor",
-                0,
-                2,
-                0,
-                2,
-                0,
-                3,
-                0,
-                2,
-                new SimpleRecipeBuilder().EUt(30),
-                false);
+        Recipe r = map.findRecipe(30,
+                Collections.singletonList(ItemStack.EMPTY),
+                Arrays.asList(
+                        Epichlorohydrin.getFluid(144),
+                        Naphtha.getFluid(3000),
+                        NitrogenDioxide.getFluid(1000)),
+                64000, MatchingMode.DEFAULT);
+        assertNotNull(r);
+    }
 
-        map.recipeBuilder()
-                .fluidInputs(Epichlorohydrin.getFluid(144))
-                .fluidInputs(Naphtha.getFluid(3000))
-                .fluidInputs(NitrogenDioxide.getFluid(1000))
-                .fluidOutputs(Epoxy.getFluid(288))
-                .duration(240).EUt(30).buildAndRegister();
-
+    @Test
+    public void removeRecipe() {
         Recipe r = map.findRecipe(30,
                 Collections.singletonList(ItemStack.EMPTY),
                 Arrays.asList(
