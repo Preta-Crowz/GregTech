@@ -114,12 +114,12 @@ public class GregTechMod {
         OreDictUnifier.init();
         NBTUtil.registerSerializers();
 
+        GTSounds.registerSounds();
+
         MetaBlocks.init();
         MetaItems.init();
         ToolItems.init();
         MetaFluids.init();
-
-        GTSounds.registerSounds();
 
         /* Start MetaTileEntity Registration */
         MTE_REGISTRY.unfreeze();
