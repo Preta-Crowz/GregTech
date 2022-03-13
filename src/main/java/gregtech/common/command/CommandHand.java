@@ -3,10 +3,6 @@ package gregtech.common.command;
 import gregtech.api.capability.GregtechCapabilities;
 import gregtech.api.capability.IElectricItem;
 import gregtech.api.items.metaitem.MetaItem;
-import gregtech.api.items.metaitem.MetaItem.MetaValueItem;
-import gregtech.api.items.toolitem.IToolStats;
-import gregtech.api.items.toolitem.ToolMetaItem;
-import gregtech.api.items.toolitem.ToolMetaItem.MetaToolValueItem;
 import gregtech.api.unification.OreDictUnifier;
 import gregtech.api.util.CTRecipeHelper;
 import gregtech.api.util.ClipboardUtil;
@@ -78,17 +74,6 @@ public class CommandHand extends CommandBase {
                             properties.getCapacity(),
                             Boolean.toString(properties.canFill()), Boolean.toString(properties.canDrain()))
                             .setStyle(new Style().setClickEvent(fluidClickEvent)));
-                }
-            }
-
-            if (stackInHand.getItem() instanceof MetaItem) {
-                MetaItem<?> metaItem = (MetaItem<?>) stackInHand.getItem();
-                MetaValueItem metaValueItem = metaItem.getItem(stackInHand);
-                if (metaValueItem != null) {
-                    if (metaValueItem instanceof ToolMetaItem.MetaToolValueItem) {
-                        IToolStats toolStats = ((MetaToolValueItem) metaValueItem).getToolStats();
-                        player.sendMessage(new TextComponentTranslation("gregtech.command.util.hand.tool_stats", toolStats.getClass().getName()));
-                    }
                 }
             }
 
